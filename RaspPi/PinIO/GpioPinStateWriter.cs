@@ -1,4 +1,4 @@
-﻿namespace RaspPi
+﻿namespace RaspPi.PinIO
 {
     using System.IO;
 

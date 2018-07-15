@@ -5,5 +5,7 @@
         void ClosePin(GpioPin pin);
 
         void OpenPin(GpioPin pin);
+
+        void OutputHigh(GpioPin pin);
     }
 }

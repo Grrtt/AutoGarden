@@ -11,13 +11,21 @@
 
         private readonly IGpioPinStateWriter gpioPinStateWriter;
 
+        private readonly IGpioPinVoltageReader gpioPinVoltageReader;
+
+        private readonly IGpioPinVoltageWriter gpioPinVoltageWriter;
+
         public GpioPinout(
             IGpioPinStateReader gpioPinStateReader,
             IGpioPinStateWriter gpioPinStateWriter,
+            IGpioPinVoltageReader gpioPinVoltageReader,
+            IGpioPinVoltageWriter gpioPinVoltageWriter,
             IGpioErrorHandler gpioErrorHandler)
         {
             this.gpioPinStateReader = gpioPinStateReader;
             this.gpioPinStateWriter = gpioPinStateWriter;
+            this.gpioPinVoltageReader = gpioPinVoltageReader;
+            this.gpioPinVoltageWriter = gpioPinVoltageWriter;
             this.gpioErrorHandler = gpioErrorHandler;
         }
 
@@ -45,6 +53,30 @@
             }
         }
 
+        public void OutputHigh(GpioPin pin)
+        {
+            if (IsPinVoltageEqualTo(pin, GpioVoltage.Low))
+            {
+                gpioPinVoltageWriter.OutputHigh(pin);
+            }
+            else
+            {
+                HandleVoltageError(GpioVoltage.High);
+            }
+        }
+
+        public void OutputLow(GpioPin pin)
+        {
+            if (IsPinVoltageEqualTo(pin, GpioVoltage.High))
+            {
+                gpioPinVoltageWriter.OutputLow(pin);
+            }
+            else
+            {
+                HandleVoltageError(GpioVoltage.Low);
+            }
+        }
+
         private void ExportPin(GpioPin pin)
         {
             gpioPinStateWriter.ExportPin(pin);
@@ -55,15 +87,31 @@
             return gpioPinStateReader.GetPinState(pin);
         }
 
+        private GpioVoltage GetPinVoltage(GpioPin pin)
+        {
+            return gpioPinVoltageReader.GetPinVoltage(pin);
+        }
+
         private void HandleStateError(GpioState state)
         {
             gpioErrorHandler.HandleStateError(state);
+        }
+
+        private void HandleVoltageError(GpioVoltage voltage)
+        {
+            gpioErrorHandler.HandleVoltageError(voltage);
         }
 
         private bool IsPinStateEqualTo(GpioPin pin, GpioState state)
         {
             GpioState actualState = GetPinState(pin);
             return actualState == state;
+        }
+
+        private bool IsPinVoltageEqualTo(GpioPin pin, GpioVoltage voltage)
+        {
+            GpioVoltage actualVoltage = GetPinVoltage(pin);
+            return actualVoltage == voltage;
         }
 
         private void UnExportPin(GpioPin pin)

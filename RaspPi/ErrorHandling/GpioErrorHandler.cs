@@ -8,5 +8,10 @@
         {
             //TODO: To be implemented later.
         }
+
+        public void HandleVoltageError(GpioVoltage voltage)
+        {
+            //TODO: To be implemented later.
+        }
     }
 }

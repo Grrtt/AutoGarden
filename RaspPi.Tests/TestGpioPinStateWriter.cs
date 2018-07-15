@@ -5,6 +5,7 @@
     using NUnit.Framework;
 
     using RaspPi.Abstractions;
+    using RaspPi.PinIO;
 
     [TestFixture]
     public class TestGpioPinStateWriter
