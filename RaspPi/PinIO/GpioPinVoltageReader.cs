@@ -10,14 +10,20 @@
         public GpioPinVoltage GetPinVoltage(GpioPin pin)
         {
             string voltageString = GetPinVoltageString(pin);
-            Enum.TryParse(voltageString, out GpioPinVoltage voltage);
-            return voltage;
+            return TryParse<GpioPinVoltage>(voltageString);
         }
 
         private string GetPinVoltageString(GpioPin pin)
         {
             string[] lines = File.ReadAllLines($"/sys/class/gpio/gpio{(int)pin}/value");
             return lines[0];
+        }
+
+        private T TryParse<T>(string valueString)
+            where T : struct, IConvertible
+        {
+            Enum.TryParse(valueString, out T value);
+            return value;
         }
     }
 }

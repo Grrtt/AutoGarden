@@ -1,4 +1,4 @@
-﻿namespace RaspPi.Tests
+﻿namespace RaspPi.Tests.PinIO
 {
     using System.IO;
 

@@ -2,8 +2,8 @@
 {
     public interface IGpioPinVoltageWriter
     {
-        void OutputHigh(GpioPin pin);
+        void SetHigh(GpioPin pin);
 
-        void OutputLow(GpioPin pin);
+        void SetLow(GpioPin pin);
     }
 }

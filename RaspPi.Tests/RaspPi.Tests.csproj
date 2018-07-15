@@ -59,9 +59,10 @@
   <ItemGroup>
     <Compile Include="TestGpioPinout.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestGpioPinStateReader.cs" />
-    <Compile Include="TestGpioPinStateWriter.cs" />
-    <Compile Include="TestGpioPinVoltageReader.cs" />
+    <Compile Include="PinIO\TestGpioPinStateReader.cs" />
+    <Compile Include="PinIO\TestGpioPinStateWriter.cs" />
+    <Compile Include="PinIO\TestGpioPinVoltageReader.cs" />
+    <Compile Include="PinIO\TestGpioPinVoltageWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

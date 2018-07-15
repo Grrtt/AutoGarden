@@ -12,6 +12,10 @@
     {
         private IGpioErrorHandler gpioErrorHandlerMock;
 
+        private IGpioPinDirectionReader gpioPinDirectionReaderMock;
+
+        private IGpioPinDirectionWriter gpioPinDirectionWriterMock;
+
         private IGpioPinStateReader gpioPinStateReaderMock;
 
         private IGpioPinStateWriter gpioPinStateWriterMock;
@@ -63,43 +67,73 @@
         }
 
         [Test]
-        public void OutputHigh_WhenPinVoltageIsHigh_GivesVoltageToErrorHandler()
+        public void SetHigh_WhenPinVoltageIsHigh_GivesVoltageToErrorHandler()
         {
             ModifyPinVoltageReaderMockReturnValue(GpioPin.One, GpioPinVoltage.High);
 
-            InvokeOutputHigh(GpioPin.One);
+            InvokeSetHigh(GpioPin.One);
 
             gpioErrorHandlerMock.Received(1).HandleVoltageError(GpioPinVoltage.High);
         }
 
         [Test]
-        public void OutputHigh_WhenVoltageIsLow_ChangesPinOutputToHighVoltage()
+        public void SetHigh_WhenVoltageIsLow_ChangesPinOutputToHighVoltage()
         {
             ModifyPinVoltageReaderMockReturnValue(GpioPin.One, GpioPinVoltage.Low);
 
-            InvokeOutputHigh(GpioPin.One);
+            InvokeSetHigh(GpioPin.One);
 
-            gpioPinVoltageWriterMock.Received(1).OutputHigh(GpioPin.One);
+            gpioPinVoltageWriterMock.Received(1).SetHigh(GpioPin.One);
         }
 
         [Test]
-        public void OutputLow_WhenVoltageIsHigh_ChangesPinOutputToLowVoltage()
+        public void SetLow_WhenVoltageIsHigh_ChangesPinOutputToLowVoltage()
         {
             ModifyPinVoltageReaderMockReturnValue(GpioPin.One, GpioPinVoltage.High);
 
-            InvokeOutputLow(GpioPin.One);
+            InvokeSetLow(GpioPin.One);
 
-            gpioPinVoltageWriterMock.Received(1).OutputLow(GpioPin.One);
+            gpioPinVoltageWriterMock.Received(1).SetLow(GpioPin.One);
         }
 
         [Test]
-        public void OutputLow_WhenVoltageIsLow_GivesVoltageToErrorHandler()
+        public void SetLow_WhenVoltageIsLow_GivesVoltageToErrorHandler()
         {
             ModifyPinVoltageReaderMockReturnValue(GpioPin.One, GpioPinVoltage.Low);
 
-            InvokeOutputLow(GpioPin.One);
+            InvokeSetLow(GpioPin.One);
 
             gpioErrorHandlerMock.Received(1).HandleVoltageError(GpioPinVoltage.Low);
+        }
+
+        [Test]
+        public void SetRead_WhenReadPinIsAskedToRead_GivesDirectionToErrorHandler()
+        {
+            ModifyPinDirectionReaderReturnValue(GpioPin.One, GpioPinDirection.In);
+
+            InvokeSetRead(GpioPin.One);
+
+            gpioErrorHandlerMock.Received(1).HandleDirectionError(GpioPinDirection.In);
+        }
+
+        [Test]
+        public void SetRead_WhenReadPinIsAskedToWrite_SetsPinToRead()
+        {
+            ModifyPinDirectionReaderReturnValue(GpioPin.One, GpioPinDirection.In);
+
+            InvokeSetWrite(GpioPin.One);
+
+            gpioPinDirectionWriterMock.Received(1).SetWrite(GpioPin.One);
+        }
+
+        [Test]
+        public void SetRead_WhenWritePinIsAskedToRead_SetsPinToRead()
+        {
+            ModifyPinDirectionReaderReturnValue(GpioPin.One, GpioPinDirection.Out);
+
+            InvokeSetRead(GpioPin.One);
+
+            gpioPinDirectionWriterMock.Received(1).SetRead(GpioPin.One);
         }
 
         [SetUp]
@@ -107,6 +141,8 @@
         {
             gpioPinStateReaderMock = CreatePinStateReaderMock();
             gpioPinStateWriterMock = CreatePinStateWriterMock();
+            gpioPinDirectionReaderMock = CreatePinDirectionReaderMock();
+            gpioPinDirectionWriterMock = CreatePinDirectionWriterMock();
             gpioPinVoltageReaderMock = CreatePinVoltageReaderMock();
             gpioPinVoltageWriterMock = CreatePinVoltageWriterMock();
             gpioErrorHandlerMock = CreateGpioErrorHandlerMock();
@@ -114,9 +150,29 @@
             systemUnderTest = CreateSystemUnderTest();
         }
 
+        [Test]
+        public void SetWrite_WhenWritePinIsAskedToWrite_GivesDirectionToErrorHandler()
+        {
+            ModifyPinDirectionReaderReturnValue(GpioPin.One, GpioPinDirection.Out);
+
+            InvokeSetWrite(GpioPin.One);
+
+            gpioErrorHandlerMock.Received(1).HandleDirectionError(GpioPinDirection.Out);
+        }
+
         private IGpioErrorHandler CreateGpioErrorHandlerMock()
         {
             return Substitute.For<IGpioErrorHandler>();
+        }
+
+        private IGpioPinDirectionReader CreatePinDirectionReaderMock()
+        {
+            return Substitute.For<IGpioPinDirectionReader>();
+        }
+
+        private IGpioPinDirectionWriter CreatePinDirectionWriterMock()
+        {
+            return Substitute.For<IGpioPinDirectionWriter>();
         }
 
         private IGpioPinStateReader CreatePinStateReaderMock()
@@ -144,6 +200,8 @@
             return new GpioPinout(
                 gpioPinStateReaderMock,
                 gpioPinStateWriterMock,
+                gpioPinDirectionReaderMock,
+                gpioPinDirectionWriterMock,
                 gpioPinVoltageReaderMock,
                 gpioPinVoltageWriterMock,
                 gpioErrorHandlerMock);
@@ -159,14 +217,29 @@
             systemUnderTest.OpenPin(pin);
         }
 
-        private void InvokeOutputHigh(GpioPin pin)
+        private void InvokeSetHigh(GpioPin pin)
         {
-            systemUnderTest.OutputHigh(pin);
+            systemUnderTest.SetHigh(pin);
         }
 
-        private void InvokeOutputLow(GpioPin pin)
+        private void InvokeSetLow(GpioPin pin)
         {
-            systemUnderTest.OutputLow(pin);
+            systemUnderTest.SetLow(pin);
+        }
+
+        private void InvokeSetRead(GpioPin pin)
+        {
+            systemUnderTest.SetRead(pin);
+        }
+
+        private void InvokeSetWrite(GpioPin pin)
+        {
+            systemUnderTest.SetWrite(pin);
+        }
+
+        private void ModifyPinDirectionReaderReturnValue(GpioPin pin, GpioPinDirection direction)
+        {
+            gpioPinDirectionReaderMock.GetPinDirection(pin).Returns(direction);
         }
 
         private void ModifyPinStateReaderMockReturnValue(GpioPin pin, GpioState state)
