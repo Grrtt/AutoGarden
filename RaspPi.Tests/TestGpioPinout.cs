@@ -65,17 +65,17 @@
         [Test]
         public void OutputHigh_WhenPinVoltageIsHigh_GivesVoltageToErrorHandler()
         {
-            ModifyPinVoltageReaderMockReturnValue(GpioPin.One, GpioVoltage.High);
+            ModifyPinVoltageReaderMockReturnValue(GpioPin.One, GpioPinVoltage.High);
 
             InvokeOutputHigh(GpioPin.One);
 
-            gpioErrorHandlerMock.Received(1).HandleVoltageError(GpioVoltage.High);
+            gpioErrorHandlerMock.Received(1).HandleVoltageError(GpioPinVoltage.High);
         }
 
         [Test]
         public void OutputHigh_WhenVoltageIsLow_ChangesPinOutputToHighVoltage()
         {
-            ModifyPinVoltageReaderMockReturnValue(GpioPin.One, GpioVoltage.Low);
+            ModifyPinVoltageReaderMockReturnValue(GpioPin.One, GpioPinVoltage.Low);
 
             InvokeOutputHigh(GpioPin.One);
 
@@ -85,7 +85,7 @@
         [Test]
         public void OutputLow_WhenVoltageIsHigh_ChangesPinOutputToLowVoltage()
         {
-            ModifyPinVoltageReaderMockReturnValue(GpioPin.One, GpioVoltage.High);
+            ModifyPinVoltageReaderMockReturnValue(GpioPin.One, GpioPinVoltage.High);
 
             InvokeOutputLow(GpioPin.One);
 
@@ -95,11 +95,11 @@
         [Test]
         public void OutputLow_WhenVoltageIsLow_GivesVoltageToErrorHandler()
         {
-            ModifyPinVoltageReaderMockReturnValue(GpioPin.One, GpioVoltage.Low);
+            ModifyPinVoltageReaderMockReturnValue(GpioPin.One, GpioPinVoltage.Low);
 
             InvokeOutputLow(GpioPin.One);
 
-            gpioErrorHandlerMock.Received(1).HandleVoltageError(GpioVoltage.Low);
+            gpioErrorHandlerMock.Received(1).HandleVoltageError(GpioPinVoltage.Low);
         }
 
         [SetUp]
@@ -174,9 +174,9 @@
             gpioPinStateReaderMock.GetPinState(pin).Returns(state);
         }
 
-        private void ModifyPinVoltageReaderMockReturnValue(GpioPin pin, GpioVoltage voltage)
+        private void ModifyPinVoltageReaderMockReturnValue(GpioPin pin, GpioPinVoltage pinVoltage)
         {
-            gpioPinVoltageReaderMock.GetPinVoltage(pin).Returns(voltage);
+            gpioPinVoltageReaderMock.GetPinVoltage(pin).Returns(pinVoltage);
         }
     }
 }

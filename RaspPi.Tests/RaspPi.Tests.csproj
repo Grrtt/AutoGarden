@@ -61,6 +61,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestGpioPinStateReader.cs" />
     <Compile Include="TestGpioPinStateWriter.cs" />
+    <Compile Include="TestGpioPinVoltageReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

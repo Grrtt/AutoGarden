@@ -2,6 +2,6 @@
 {
     public interface IGpioPinVoltageReader
     {
-        GpioVoltage GetPinVoltage(GpioPin pin);
+        GpioPinVoltage GetPinVoltage(GpioPin pin);
     }
 }

@@ -9,7 +9,7 @@
             //TODO: To be implemented later.
         }
 
-        public void HandleVoltageError(GpioVoltage voltage)
+        public void HandleVoltageError(GpioPinVoltage pinVoltage)
         {
             //TODO: To be implemented later.
         }

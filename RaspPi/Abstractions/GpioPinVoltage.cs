@@ -1,6 +1,6 @@
 ﻿namespace RaspPi.Abstractions
 {
-    public enum GpioVoltage
+    public enum GpioPinVoltage
     {
         Low,
 

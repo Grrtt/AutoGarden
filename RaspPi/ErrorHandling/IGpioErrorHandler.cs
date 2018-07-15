@@ -6,6 +6,6 @@
     {
         void HandleStateError(GpioState state);
 
-        void HandleVoltageError(GpioVoltage voltage);
+        void HandleVoltageError(GpioPinVoltage pinVoltage);
     }
 }
