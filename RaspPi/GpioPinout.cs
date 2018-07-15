@@ -21,20 +21,7 @@
             this.gpioErrorHandler = gpioErrorHandler;
         }
 
-        public void SetPinState(GpioPin pin, GpioState state)
-        {
-            if (state == GpioState.Open)
-            {
-                OpenPin(pin);
-            }
-
-            if (state == GpioState.Closed)
-            {
-                ClosePin(pin);
-            }
-        }
-
-        private void ClosePin(GpioPin pin)
+        public void ClosePin(GpioPin pin)
         {
             if (IsPinStateEqualTo(pin, GpioState.Open))
             {
@@ -43,6 +30,18 @@
             else
             {
                 HandleStateError(GpioState.Closed);
+            }
+        }
+
+        public void OpenPin(GpioPin pin)
+        {
+            if (IsPinStateEqualTo(pin, GpioState.Closed))
+            {
+                ExportPin(pin);
+            }
+            else
+            {
+                HandleStateError(GpioState.Open);
             }
         }
 
@@ -65,18 +64,6 @@
         {
             GpioState actualState = GetPinState(pin);
             return actualState == state;
-        }
-
-        private void OpenPin(GpioPin pin)
-        {
-            if (IsPinStateEqualTo(pin, GpioState.Closed))
-            {
-                ExportPin(pin);
-            }
-            else
-            {
-                HandleStateError(GpioState.Open);
-            }
         }
 
         private void UnExportPin(GpioPin pin)

@@ -19,41 +19,41 @@
         private GpioPinout systemUnderTest;
 
         [Test]
-        public void SetPinState_WhenClosedPinIsAskedToClose_GivesStateToErrorHandler()
+        public void ClosePin_WhenClosedPinIsAskedToClose_GivesStateToErrorHandler()
         {
             ModifyPinStateProviderReturnValue(GpioPin.One, GpioState.Closed);
 
-            InvokeSetPinState(GpioPin.One, GpioState.Closed);
+            InvokeClosePin(GpioPin.One);
 
             gpioErrorHandlerMock.Received(1).HandleStateError(GpioState.Closed);
         }
 
         [Test]
-        public void SetPinState_WhenClosedPinIsAskedToOpen_OpensPin()
-        {
-            ModifyPinStateProviderReturnValue(GpioPin.One, GpioState.Closed);
-
-            InvokeSetPinState(GpioPin.One, GpioState.Open);
-
-            gpioPinStateWriterMock.Received(1).ExportPin(GpioPin.One);
-        }
-
-        [Test]
-        public void SetPinState_WhenOpenPinIsAskedToClose_ClosesPin()
+        public void ClosePin_WhenOpenPinIsAskedToClose_ClosesPin()
         {
             ModifyPinStateProviderReturnValue(GpioPin.One, GpioState.Open);
 
-            InvokeSetPinState(GpioPin.One, GpioState.Closed);
+            InvokeClosePin(GpioPin.One);
 
             gpioPinStateWriterMock.Received(1).UnExportPin(GpioPin.One);
         }
 
         [Test]
-        public void SetPinState_WhenOpenPinIsAskedToOpen_GivesStateToErrorHandler()
+        public void OpenPin_WhenClosedPinIsAskedToOpen_OpensPin()
+        {
+            ModifyPinStateProviderReturnValue(GpioPin.One, GpioState.Closed);
+
+            InvokeOpenPin(GpioPin.One);
+
+            gpioPinStateWriterMock.Received(1).ExportPin(GpioPin.One);
+        }
+
+        [Test]
+        public void OpenPin_WhenOpenPinIsAskedToOpen_GivesStateToErrorHandler()
         {
             ModifyPinStateProviderReturnValue(GpioPin.One, GpioState.Open);
 
-            InvokeSetPinState(GpioPin.One, GpioState.Open);
+            InvokeOpenPin(GpioPin.One);
 
             gpioErrorHandlerMock.Received(1).HandleStateError(GpioState.Open);
         }
@@ -88,9 +88,14 @@
             return new GpioPinout(gpioPinStateReaderMock, gpioPinStateWriterMock, gpioErrorHandlerMock);
         }
 
-        private void InvokeSetPinState(GpioPin pin, GpioState state)
+        private void InvokeClosePin(GpioPin pin)
         {
-            systemUnderTest.SetPinState(pin, state);
+            systemUnderTest.ClosePin(pin);
+        }
+
+        private void InvokeOpenPin(GpioPin pin)
+        {
+            systemUnderTest.OpenPin(pin);
         }
 
         private void ModifyPinStateProviderReturnValue(GpioPin pin, GpioState state)

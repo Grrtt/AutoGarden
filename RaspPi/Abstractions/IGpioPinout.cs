@@ -2,6 +2,8 @@
 {
     public interface IGpioPinout
     {
-        void SetPinState(GpioPin pin, GpioState state);
+        void ClosePin(GpioPin pin);
+
+        void OpenPin(GpioPin pin);
     }
 }
