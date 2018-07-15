@@ -2,7 +2,7 @@
 {
     using RaspPi.Abstractions;
 
-    public class GpioErrorHandling : IGpioErrorHandler
+    public class GpioErrorHandler : IGpioErrorHandler
     {
         public void HandleStateError(GpioState state)
         {
