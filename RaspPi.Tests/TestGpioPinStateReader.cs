@@ -9,7 +9,9 @@
     [TestFixture]
     public class TestGpioPinStateReader
     {
-        private const string gpioTopLevelDirectory = "/sys/class/gpio/";
+        private const string GpioDirectory = "/sys/class/gpio";
+
+        private const string GpioTopLevelDirectory = "/sys";
 
         private GpioPinStateReader systemUnderTest;
 
@@ -40,15 +42,15 @@
         [TearDown]
         public void TearDown()
         {
-            if (Directory.Exists($"{gpioTopLevelDirectory}"))
+            if (Directory.Exists($"{GpioTopLevelDirectory}"))
             {
-                Directory.Delete($"{gpioTopLevelDirectory}", true);
+                Directory.Delete($"{GpioTopLevelDirectory}", true);
             }
         }
 
         private void CreateGpioFolder(string folder)
         {
-            Directory.CreateDirectory($"{gpioTopLevelDirectory}/{folder}");
+            Directory.CreateDirectory($"{GpioDirectory}/{folder}");
         }
 
         private GpioPinStateReader CreateSystemUnderTest()

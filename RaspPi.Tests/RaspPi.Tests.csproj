@@ -60,6 +60,7 @@
     <Compile Include="TestGpioPinout.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestGpioPinStateReader.cs" />
+    <Compile Include="TestGpioPinStateWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
