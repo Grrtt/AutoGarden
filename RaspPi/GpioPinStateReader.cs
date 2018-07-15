@@ -1,13 +1,19 @@
 ﻿namespace RaspPi
 {
+    using System.IO;
+
     using RaspPi.Abstractions;
 
     public class GpioPinStateReader : IGpioPinStateReader
     {
         public GpioState GetPinState(GpioPin pin)
         {
-            //TODO: To be implemented later.
-            return GpioState.Open;
+            if (Directory.Exists($"/sys/class/gpio/gpio{(int)pin}"))
+            {
+                return GpioState.Open;
+            }
+
+            return GpioState.Closed;
         }
     }
 }
