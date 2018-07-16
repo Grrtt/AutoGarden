@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PinIO\TestGpioPinDirectionReader.cs" />
     <Compile Include="TestGpioPinout.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PinIO\TestGpioPinStateReader.cs" />
