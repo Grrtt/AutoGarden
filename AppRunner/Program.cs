@@ -1,21 +1,34 @@
 ﻿namespace AppRunner
 {
-    using Castle.MicroKernel.Registration;
-    using Castle.Windsor;
+    using System;
+    using System.Linq;
+    using System.Threading;
 
-    using RaspPi.Abstractions;
+    using Unosquare.RaspberryIO;
+    using Unosquare.RaspberryIO.Gpio;
 
     class Program
     {
         static void Main(string[] args)
         {
-            WindsorContainer container = new WindsorContainer();
-            container.Register(
-                Classes.FromAssemblyNamed("RaspPi").Pick().WithServiceAllInterfaces().LifestyleTransient());
+            foreach (GpioPin pin in Pi.Gpio.OrderBy(x => x.BcmPinNumber))
+            {
+                Console.WriteLine(pin.Name);
+                Console.WriteLine(pin.BcmPinNumber);
+                Console.WriteLine(pin.PinMode);
+                Console.WriteLine(pin.ReadValue());
+            }
 
-            IGpioPinout pinout = container.Resolve<IGpioPinout>();
+            GpioPin gpioPin = Pi.Gpio.GetGpioPinByBcmPinNumber(2);
+            gpioPin.PinMode = GpioPinDriveMode.Output;
 
-            pinout.OpenPin(GpioPin.Two);
+            while(true)
+            {
+                gpioPin.Write(GpioPinValue.Low);
+                Thread.Sleep(500);
+                gpioPin.Write(GpioPinValue.High);
+                Thread.Sleep(500);
+            }
         }
     }
 }

@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RaspPi\RaspPi.csproj" />
+    <ProjectReference Include="..\Unosquare.RaspberryIO\Unosquare.RaspberryIO.csproj" />
   </ItemGroup>
 
 </Project>
