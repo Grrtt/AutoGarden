@@ -1,5 +1,8 @@
 ﻿namespace AutoGarden
 {
+    using AutoGarden.Models.Interfaces;
+    using AutoGarden.Models.Schedule;
+
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +25,13 @@
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            RegisterDependencies(services);
+        }
+
+        private void RegisterDependencies(IServiceCollection services)
+        {
+            services.AddTransient<IRepository<Schedule>, ScheduleRepository>();
         }
     }
 }
