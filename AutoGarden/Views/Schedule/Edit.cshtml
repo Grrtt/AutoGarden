@@ -1,0 +1,114 @@
+﻿@model AutoGarden.Models.Schedule.Schedule
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "_Layout";
+}
+
+<form id="editForm" class="py-3">
+    <div class="form-group container border rounded">
+        <div class="py-3">
+            <span class="h4">Schedule</span>
+            @if (Model.Id > 0)
+            {
+                <span>| Id: @Model.Id</span>
+            }
+            <hr>
+            <div class="row" id="scheduleSection">
+                <div class="col-xs-6 px-3">
+                    <label asp-for="StartTime">Start Time</label>
+                    <input asp-for="StartTime" type="time" value="@DateTime.Now.ToString("HH:mm:ss")" class="form-control" />
+                </div>
+                <div class="col-xs-6">
+                    <label asp-for="EndTime">End Time</label>
+                    <input asp-for="EndTime" type="time" value="@DateTime.Now.ToString("HH:mm:ss")" class="form-control" />
+                </div>
+            </div>
+            <div class="row pt-3">
+                <div class="col-xs-6 px-3">
+                    <label asp-for="Duration">Duration</label>
+                    <input asp-for="Duration" placeholder="HH:mm:ss" class="form-control" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group container border rounded">
+        <div class="py-3">
+            <h4>Range</h4>
+            <hr />
+            <div id="rangeSection" class="row">
+                <div class="col-xs-6 px-3">
+                    <label asp-for="StartDate">Start Date</label>
+                    <input asp-for="StartDate" type="date" value="@DateTime.Today.ToString("yyyy-MM-dd")" min="@DateTime.Today.ToString("yyyy-MM-dd")" class="form-control" />
+                </div>
+                <div class="col-xs-6">
+                    <label asp-for="RangeOccurrences">Occurrence(s)</label>
+                    <select asp-for="RangeOccurrences" class="form-control" onchange="loadRangeSequence($(this).val())">
+                        <option value="single">Single</option>
+                        <option value="multiple" selected>Multiple</option>
+                        <option value="infinite">Infinite</option>
+                    </select>
+                </div>
+            </div>
+            <div id="rangeSequenceSection" class="row px-3 pt-3">
+
+            </div>
+        </div>
+    </div>
+    <div id="patternSection" class="form-group container border rounded">
+        <div class="py-3">
+            <div>
+                <h4>Pattern</h4>
+                <hr />
+            </div>
+            <div class="row">
+                <div class="col-xs-6 px-3">
+                    <label asp-for="Recurrence">Recurrence</label>
+                    <select asp-for="Recurrence" class="form-control">
+                        <option value="daily">Daily</option>
+                        <option value="weekly" selected>Weekly</option>
+                        <option value="monthly">Monthly</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <div id="recurrencePeriod" class="col-md-6"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group py-1">
+        <div class="float-right">
+            <button id="submit" class="form-control btn btn-secondary" type="submit"></button>
+        </div>
+    </div>
+</form>
+
+@section Scripts
+{
+    <script>
+
+        function loadRangeSequence(value) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Content("~/Schedule/PeriodicSequence")',
+                data: {
+                    value: value
+                },
+                success: function(data) {
+                    $('#rangeSequenceSection').html(data);
+                }
+            });
+
+            if (value == 'single') {
+                $('#patternSection').hide();
+            } else {
+                $('#patternSection').show();
+            }
+        }
+
+        $(document).ready(function() {
+            $('#submit').html((@Model.Id < 1) ? 'Create' : 'Save');
+            loadRangeSequence('multiple');
+        });
+    </script>
+}

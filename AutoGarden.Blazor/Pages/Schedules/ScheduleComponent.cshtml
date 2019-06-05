@@ -1,0 +1,31 @@
+﻿@using AutoGarden.Api.Contracts.DataObjects
+@using Microsoft.AspNetCore.Components
+
+<div class="table content">
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Enabled</th>
+        </tr>
+        <tr>
+            <td>@Content.Title</td>
+            <td>@Content.Description</td>
+            <td>@Content.Start</td>
+            <td>@Content.End</td>
+            <td>@Content.Enabled</td>
+        </tr>
+    </table>
+</div>
+
+
+
+@functions
+{
+
+    [Parameter]
+    private Schedule Content { get; set; }
+
+}

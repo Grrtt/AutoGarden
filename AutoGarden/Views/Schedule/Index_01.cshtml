@@ -1,0 +1,36 @@
+﻿@{
+    Layout = "_Layout";
+}
+@using AutoGarden.Models.Schedule
+@model IEnumerable<AutoGarden.Models.Schedule.Schedule>
+
+<div>
+    <a asp-action="Add">Add</a>
+    <table class="table table-striped table-hover">
+        <tr class="text-center">
+            <th>@Html.DisplayNameFor(model => model.Enabled)</th>
+            <th>@Html.DisplayNameFor(model => model.Description)</th>
+            <th>@Html.DisplayNameFor(model => model.StartTime)</th>
+            <th>@Html.DisplayNameFor(model => model.StopDate)</th>
+            <th>@Html.DisplayNameFor(model => model.Recurrence)</th>
+            <th></th>
+        </tr>
+        @foreach (Schedule schedule in Model)
+        {
+            <tr class="text-center">
+                <td>
+                    <input type="checkbox" value="@schedule.Enabled"/>
+                </td>
+                <td>@schedule.Description</td>
+                <td>@schedule.StartTime</td>
+                <td>@schedule.StopDate</td>
+                <td>@schedule.Recurrence</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@schedule.Id">Edit</a>
+                    /
+                    <a asp-action="Delete" asp-route-id="@schedule.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

@@ -1,0 +1,85 @@
+﻿@page "/schedules"
+@using AutoGarden.Api.Contracts.DataObjects
+@using AutoGarden.Utility.Extensions
+@using Microsoft.AspNetCore.Components
+
+<h3>Schedules</h3>
+
+<div>
+    <span>
+        Search:
+        <input bind="@searchText" oninput="@(x => FilterBySearchText(x))"/>
+    </span>
+    <button onclick="@ClearSearch">Clear</button>
+    <span>
+        <DatePicker Inline="true"/>
+        <input bind="@endDate" type="date" onchange="@(x => FilterSchedules(x))"/>
+    </span>
+</div>
+
+@if (filteredSchedules?.Length > 0)
+{
+    <div>
+        @foreach (Schedule schedule in filteredSchedules)
+        {
+            <ScheduleComponent Content="@schedule"/>
+        }
+    </div>
+}
+else
+{
+    <div>
+        No schedules found.
+    </div>
+}
+
+@functions
+{
+
+    protected override void OnInit()
+    {
+        schedules = GetSchedules();
+        filteredSchedules = schedules;
+    }
+
+    private DateTime startDate;
+
+    private DateTime endDate;
+
+    private string searchText;
+
+    private Schedule[] schedules;
+
+    private Schedule[] filteredSchedules;
+
+    private Schedule[] GetSchedules()
+    {
+        return new[] { new Schedule { Title = "title1", Description = "", Start = new DateTime(1991, 9, 12), End = DateTime.Today }, new Schedule { Title = "Second Tital", Description = "test", Start = new DateTime(1990, 12, 6), End = DateTime.Today } };
+    }
+
+    private void FilterSchedules(UIChangeEventArgs args)
+    {
+        filteredSchedules = schedules;
+
+        if (!string.IsNullOrWhiteSpace(searchText))
+        {
+            filteredSchedules = filteredSchedules.Where(x => x.Title.Like($"%{searchText}%") || x.Description.Like($"%{searchText}%")).ToArray();
+        }
+
+        filteredSchedules = filteredSchedules.Where(x => x.Start >= startDate && x.End <= endDate).ToArray();
+    }
+
+    private void FilterBySearchText(UIChangeEventArgs search)
+    {
+        Console.WriteLine(search.Value as string);
+        searchText = search.Value as string;
+        FilterSchedules(search);
+    }
+
+    private void ClearSearch()
+    {
+        filteredSchedules = schedules;
+        searchText = string.Empty;
+    }
+
+}

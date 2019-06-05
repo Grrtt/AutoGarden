@@ -1,11 +1,14 @@
 ﻿namespace AutoGarden.Controllers
 {
+    using System;
     using System.Collections.Generic;
 
     using AutoGarden.Models.Interfaces;
     using AutoGarden.Models.Schedule;
 
     using Microsoft.AspNetCore.Mvc;
+
+    using Utility;
 
     public class ScheduleController : Controller
     {
@@ -18,13 +21,52 @@
 
         public IActionResult Add()
         {
-            return View();
+            return Edit(0);
+        }
+
+        public IActionResult Edit(int id)
+        {
+            Maybe<Schedule> schedule = scheduleRepository.GetOne(id);
+            return View(schedule.Match(new Schedule { Id = id}, x => x));
+        }
+
+        public IActionResult Update(Schedule schedule)
+        {
+            scheduleRepository.Update(schedule);
+
+            IEnumerable<Schedule> schedules = scheduleRepository.GetAll();
+            return View("Index", schedules);
+        }
+        
+        public IActionResult Delete(int id)
+        {
+            scheduleRepository.Delete(id);
+
+            IEnumerable<Schedule> schedules = scheduleRepository.GetAll();
+            return View("Index", schedules);
         }
 
         public IActionResult Index()
         {
-            List<Schedule> schedules = scheduleRepository.GetAll();
+            IEnumerable<Schedule> schedules = scheduleRepository.GetAll();
             return View(schedules);
+        }
+
+        [HttpPost]
+        public IActionResult PeriodicSequence(string value)
+        {
+            if (!string.Equals(value, "multiple", StringComparison.CurrentCultureIgnoreCase))
+            {
+                return new EmptyResult();
+            }
+
+            return PartialView("_PeriodicSequence");
+        }
+
+        [HttpPost]
+        public IActionResult PatternRecurrences()
+        {
+            return new EmptyResult();
         }
     }
 }

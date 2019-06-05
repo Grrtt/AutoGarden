@@ -1,0 +1,54 @@
+﻿@using AutoGarden.Models.Schedule
+@model AutoGarden.Models.Schedule.Schedule
+
+@{
+    Layout = "_Layout";
+}
+
+<h4>Schedule</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" required=""/>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Enabled" /> @Html.DisplayNameFor(model => model.Enabled)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <input asp-for="Id" class="form-control" hidden/>
+            </div>
+            <div class="form-group">
+                <label asp-for="Recurrence" class="control-label"></label>
+                <select asp-for="Recurrence" asp-items="Html.GetEnumSelectList<ScheduleFrequency>()" class="form-control">
+                </select>
+                <span asp-validation-for="Recurrence" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartTime" class="control-label"></label>
+                <input asp-for="StartTime" class="form-control" />
+                <span asp-validation-for="StartTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StopDate" class="control-label"></label>
+                <input asp-for="StopDate" class="form-control" />
+                <span asp-validation-for="StopDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" asp-action="Update" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

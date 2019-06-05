@@ -1,36 +1,57 @@
 ﻿namespace AutoGarden.Models.Schedule
 {
-    using System;
     using System.Collections.Generic;
+    using System.Linq;
 
-    using AutoGarden.Models.Interfaces;
+    using Interfaces;
+
+    using Utility;
 
     public class ScheduleRepository : IRepository<Schedule>
     {
-        public List<Schedule> GetAll()
+        private readonly List<Schedule> schedules;
+
+        private int idIncrementation;
+
+        public ScheduleRepository()
         {
-            return new List<Schedule>
-                       {
-                           CreateSchedule("Watering Plants", DateTime.Now, DateTime.Now, ScheduleFrequency.Recurring),
-                           CreateSchedule(
-                               "Take Pictures of Plants",
-                               DateTime.MinValue,
-                               DateTime.MaxValue,
-                               ScheduleFrequency.Singular)
-                       };
+            schedules = new List<Schedule>();
         }
 
-        private Schedule CreateSchedule(
-            string description,
-            DateTime startDate,
-            DateTime stopDate,
-            ScheduleFrequency frequency)
+        public void Delete(int id)
         {
-            return new Schedule
-                       {
-                           Description = description, StartDate = startDate, StopDate = stopDate,
-                           ScheduleFrequency = frequency
-                       };
+            Schedule schedule = schedules.First(s => s.Id == id);
+            schedules.Remove(schedule);
+        }
+
+        public IEnumerable<Schedule> GetAll()
+        {
+            return schedules;
+        }
+
+        public Maybe<Schedule> GetOne(int id)
+        {
+            Schedule schedule = schedules.FirstOrDefault(x => x.Id == id);
+            if (schedule == null)
+            {
+                return new Maybe<Schedule>();
+            }
+
+            return new Maybe<Schedule>(schedule);
+        }
+
+        public void Update(Schedule schedule)
+        {
+            if (!schedules.Contains(schedule))
+            {
+                idIncrementation++;
+                schedule.Id = idIncrementation;
+                schedules.Add(schedule);
+                return;
+            }
+
+            Schedule foundSchedule = schedules.Find(s => s.Id == schedule.Id);
+            foundSchedule = schedule;
         }
     }
 }

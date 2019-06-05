@@ -2,8 +2,16 @@
 {
     using System.Collections.Generic;
 
+    using Utility;
+
     public interface IRepository<T>
     {
-        List<T> GetAll();
+        void Delete(int id);
+
+        IEnumerable<T> GetAll();
+
+        Maybe<T> GetOne(int id);
+
+        void Update(T value);
     }
 }

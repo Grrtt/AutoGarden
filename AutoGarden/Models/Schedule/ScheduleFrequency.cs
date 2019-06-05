@@ -2,8 +2,8 @@
 {
     public enum ScheduleFrequency
     {
-        Recurring,
+        Indefinite,
 
-        Singular
+        Definite
     }
 }
