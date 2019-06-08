@@ -1,5 +1,6 @@
 ﻿using AutoGarden.Models.Interfaces;
 using System.Collections.Generic;
+using AutoGarden.Models.Schedule;
 
 namespace AutoGarden.Database
 {
@@ -46,6 +47,11 @@ namespace AutoGarden.Database
         }
 
         public void Update(T value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public int Add(Schedule schedule)
         {
             throw new System.NotImplementedException();
         }

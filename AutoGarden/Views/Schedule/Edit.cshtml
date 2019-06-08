@@ -5,7 +5,7 @@
     Layout = "_Layout";
 }
 
-<form id="editForm" class="py-3">
+<form id="editForm" class="py-3" asp-action="@(Model.Id < 1 ? "Add" : "Update")">
     <div class="form-group container border rounded">
         <div class="py-3">
             <span class="h4">Schedule</span>
@@ -14,20 +14,38 @@
                 <span>| Id: @Model.Id</span>
             }
             <hr>
-            <div class="row" id="scheduleSection">
-                <div class="col-xs-6 px-3">
-                    <label asp-for="StartTime">Start Time</label>
-                    <input asp-for="StartTime" type="time" value="@DateTime.Now.ToString("HH:mm:ss")" class="form-control" />
+            <div id="scheduleSection" class="row">
+                <div class="col">
+                    <div class="row">
+                        <div class="col form-group">
+                            <label asp-for="Title">Title</label>
+                            <input class="form-control" asp-for="Title" placeholder="E.g., Water the Plants" required/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col form-group">
+                            <label asp-for="StartTime">Start Time</label>
+                            <input asp-for="StartTime" type="time" value="@DateTime.Now.ToString("HH:mm:ss")" class="form-control" />
+                        </div>
+                        <div class="col form-group">
+                            <label asp-for="EndTime">End Time</label>
+                            <input asp-for="EndTime" type="time" value="@DateTime.Now.ToString("HH:mm:ss")" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label asp-for="Duration">Duration</label>
+                            <input asp-for="Duration" placeholder="HH:mm:ss" class="form-control" />
+                        </div>
+                    </div>
                 </div>
-                <div class="col-xs-6">
-                    <label asp-for="EndTime">End Time</label>
-                    <input asp-for="EndTime" type="time" value="@DateTime.Now.ToString("HH:mm:ss")" class="form-control" />
-                </div>
-            </div>
-            <div class="row pt-3">
-                <div class="col-xs-6 px-3">
-                    <label asp-for="Duration">Duration</label>
-                    <input asp-for="Duration" placeholder="HH:mm:ss" class="form-control" />
+                <div class="col">
+                    <div class="row">
+                        <div class="col form-group">
+                            <label asp-for="Description">Description</label>
+                            <textarea class="form-control h-100" asp-for="Description" rows="7" type="text"></textarea>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

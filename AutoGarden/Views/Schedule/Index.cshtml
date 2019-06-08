@@ -1,8 +1,51 @@
-﻿@model IEnumerable<AutoGarden.Models.Schedule.Schedule>
+﻿@using AutoGarden.Models.Schedule
+@model IEnumerable<AutoGarden.Models.Schedule.Schedule>
 
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
 }
 
-<h2>title</h2>
+<div>
+    <table class="table table-hover table-striped table-light border">
+        <thead class="bg-dark text-light rounded text-center">
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Start</th>
+                <th>End</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            @foreach (Schedule schedule in Model)
+            {
+                <tr class="rounded clickable-row" style="cursor: pointer;" data-href="Schedule/Edit?Id=@schedule.Id">
+                    <td>@schedule.Id</td>
+                    <td>@schedule.Title</td>
+                    <td>@schedule.Description.Substring(0, 15)</td>
+                    <td>@schedule.StartDate?.ToString("MM/dd/yy")</td>
+                    <td>@schedule.StopDate?.ToString("MM/dd/yy")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="pb-4">
+    <a asp-action="Edit" asp-route-id="0">
+        <button class="btn btn-dark float-right">
+            <span class="glyphicon glyphicon-plus">Add</span>
+        </button>
+    </a>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('.clickable-row').click(function () {
+                window.location = $(this).data('href');
+            });
+        });
+    </script>
+}

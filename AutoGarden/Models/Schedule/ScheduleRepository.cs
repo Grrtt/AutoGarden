@@ -53,5 +53,13 @@
             Schedule foundSchedule = schedules.Find(s => s.Id == schedule.Id);
             foundSchedule = schedule;
         }
+
+        public int Add(Schedule schedule)
+        {
+            idIncrementation++;
+            schedule.Id = idIncrementation;
+            schedules.Add(schedule);
+            return schedule.Id;
+        }
     }
 }

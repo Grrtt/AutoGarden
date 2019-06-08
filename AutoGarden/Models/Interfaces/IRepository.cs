@@ -13,5 +13,7 @@
         Maybe<T> GetOne(int id);
 
         void Update(T value);
+
+        int Add(Schedule.Schedule schedule);
     }
 }

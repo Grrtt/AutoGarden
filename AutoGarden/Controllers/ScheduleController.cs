@@ -19,9 +19,10 @@
             this.scheduleRepository = scheduleRepository;
         }
 
-        public IActionResult Add()
+        public IActionResult Add(Schedule schedule)
         {
-            return Edit(0);
+            int id = scheduleRepository.Add(schedule);
+            return RedirectToAction("Index");
         }
 
         public IActionResult Edit(int id)
