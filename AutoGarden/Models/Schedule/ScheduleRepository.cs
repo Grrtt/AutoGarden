@@ -42,23 +42,19 @@
 
         public void Update(Schedule schedule)
         {
-            if (!schedules.Contains(schedule))
-            {
-                idIncrementation++;
-                schedule.Id = idIncrementation;
-                schedules.Add(schedule);
-                return;
-            }
-
             Schedule foundSchedule = schedules.Find(s => s.Id == schedule.Id);
             foundSchedule = schedule;
         }
 
         public int Add(Schedule schedule)
         {
-            idIncrementation++;
-            schedule.Id = idIncrementation;
-            schedules.Add(schedule);
+            if (schedules.All(x => x.Id != schedule.Id))
+            {
+                idIncrementation++;
+                schedule.Id = idIncrementation;
+                schedules.Add(schedule);
+            }
+
             return schedule.Id;
         }
     }

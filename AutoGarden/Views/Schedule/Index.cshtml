@@ -20,10 +20,10 @@
         <tbody class="text-center">
             @foreach (Schedule schedule in Model)
             {
-                <tr class="rounded clickable-row" style="cursor: pointer;" data-href="Schedule/Edit?Id=@schedule.Id">
+                <tr class="rounded clickable-row" style="cursor: pointer;" data-href="/Schedule/Edit?Id=@schedule.Id">
                     <td>@schedule.Id</td>
                     <td>@schedule.Title</td>
-                    <td>@schedule.Description.Substring(0, 15)</td>
+                    <td>@schedule.Description</td>
                     <td>@schedule.StartDate?.ToString("MM/dd/yy")</td>
                     <td>@schedule.StopDate?.ToString("MM/dd/yy")</td>
                 </tr>

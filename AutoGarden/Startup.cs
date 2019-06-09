@@ -1,4 +1,8 @@
-﻿namespace AutoGarden
+﻿using Castle.Facilities.AspNetCore;
+using Castle.MicroKernel.Registration;
+using Castle.Windsor;
+
+namespace AutoGarden
 {
     using System;
     using System.Threading.Tasks;
@@ -28,7 +32,7 @@
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
 
@@ -43,12 +47,19 @@
                     DayOfWeek.Saturday)).Build();
             Task<DateTimeOffset> offset = scheduler.ScheduleJob(job, trigger);
             scheduler.Start();
-            RegisterDependencies(services);
+
+            IWindsorContainer container = CreateWindsorRegistration();
+            return services.AddWindsor(container);
         }
 
-        private void RegisterDependencies(IServiceCollection services)
+        private IWindsorContainer CreateWindsorRegistration()
         {
-            services.AddSingleton<IRepository<Schedule>, ScheduleRepository>();
+            WindsorContainer container = new WindsorContainer();
+
+            container.Register(Component.For<IRepository<Schedule>>().ImplementedBy<ScheduleRepository>()
+                .LifestyleSingleton());
+
+            return container;
         }
     }
 
